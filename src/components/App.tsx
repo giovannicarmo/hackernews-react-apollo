@@ -1,20 +1,18 @@
-import React from "react";
-import { Route, Switch } from "react-router";
-import "./../styles/App.css";
-import CreateLink from "./CreateLink";
-import Header from "./Header";
-import LinkList from "./LinkList";
-import Login from "./Login";
+import React from 'react';
+import { Route, Switch } from 'react-router';
+import ROUTES from '../Routes';
+import './../styles/App.css';
+import Header from './Header';
 
 function App() {
   return (
-    <div className='center w85'>
+    <div className="center w85">
       <Header />
-      <div className='ph3 pv1 background-gray'>
+      <div className="ph3 pv1 background-gray">
         <Switch>
-          <Route exact path='/' component={LinkList} />
-          <Route exact path='/create' component={CreateLink} />
-          <Route exact path='/login' component={Login} />
+          {ROUTES.map((route) => (
+            <Route exact path={route.path} component={route.component} />
+          ))}
         </Switch>
       </div>
     </div>
