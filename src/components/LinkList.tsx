@@ -13,8 +13,8 @@ const LinkList: React.FC = () => {
 
         return (
           <div>
-            {data.feed.links.map((link: LinkAttr) => (
-              <Link key={link.id} {...{ link }} />
+            {data.feed.links.map((link: LinkAttr, index: number) => (
+              <Link key={link.id} {...{ link, index }} />
             ))}
           </div>
         );

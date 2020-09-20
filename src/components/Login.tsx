@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import { Mutation } from "react-apollo";
+import { useHistory } from "react-router";
 import { AUTH_TOKEN } from "../constants";
+import { LOGIN_MUTATION, SIGNUP_MUTATION } from "../mutations";
 
 const Login: React.FC = () => {
   const [login, setLogin] = useState<boolean>();
@@ -7,8 +10,12 @@ const Login: React.FC = () => {
   const [name, setName] = useState<string>();
   const [email, setEmail] = useState<string>();
 
-  const confirm = async () => {
-    // ... you'll implement this 🔜
+  const history = useHistory();
+
+  const confirm = async (data: any) => {
+    const { token } = login ? data.login : data.signup;
+    saveUserData(token);
+    history.push(`/`);
   };
 
   const saveUserData = (token: any) => {
@@ -41,9 +48,17 @@ const Login: React.FC = () => {
         />
       </div>
       <div className='flex mt3'>
-        <div className='pointer mr2 button' onClick={() => confirm()}>
-          {login ? "login" : "create account"}
-        </div>
+        <Mutation
+          mutation={login ? LOGIN_MUTATION : SIGNUP_MUTATION}
+          variables={{ email, password, name }}
+          onCompleted={(data: any) => confirm(data)}
+        >
+          {(mutation: any) => (
+            <div className='pointer mr2 button' onClick={mutation}>
+              {login ? "login" : "create account"}
+            </div>
+          )}
+        </Mutation>
         <div className='pointer button' onClick={() => setLogin(!login)}>
           {login ? "need to create an account?" : "already have an account?"}
         </div>
